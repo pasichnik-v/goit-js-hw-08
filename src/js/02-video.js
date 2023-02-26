@@ -20,7 +20,7 @@ const onPlay = function ({ duration, seconds, percent }) {
     if (percent < 1) {
     localStorage.setItem(STORAGE_KEY, seconds);    
     } else {
-        console.log('Відео закінчилося. Очищаємо localStorage');
+        // console.log('Відео закінчилося. Очищаємо localStorage');
         localStorage.removeItem(STORAGE_KEY);
     }
     
