@@ -8,7 +8,7 @@ const iframe = document.querySelector('iframe');
     const player = new Player(iframe);
 
     player.on('play', function() {
-        console.log('Музика грає');
+        console.log('Відео програється');
     });
     player.getVideoTitle().then(function(title) {
         console.log('title:', title);
@@ -20,7 +20,7 @@ const onPlay = function ({ duration, seconds, percent }) {
     if (percent < 1) {
     localStorage.setItem(STORAGE_KEY, seconds);    
     } else {
-        console.log('чистити кеш');
+        console.log('Відео закінчилося. Очищаємо localStorage');
         localStorage.removeItem(STORAGE_KEY);
     }
     
