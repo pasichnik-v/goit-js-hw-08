@@ -1,19 +1,38 @@
 
+// Імпорт
+import throttle from "lodash.throttle";
 import Player from '@vimeo/player';
 
-  const iframe = document.querySelector('iframe');
+// Викликав плеєр і зв'язав
+const iframe = document.querySelector('iframe');
     const player = new Player(iframe);
 
     player.on('play', function() {
-        console.log('played the video!');
+        console.log('Музика грає');
     });
-
     player.getVideoTitle().then(function(title) {
         console.log('title:', title);
     });
-    
 
-player.setCurrentTime(30.456).then(function(seconds) {
+const STORAGE_KEY = 'videoplayer-current-time';
+    // Додати подію відсліджування оновлення часу відтворення. Додаємо в сховище дані
+const onPlay = function ({ duration, seconds, percent }) {
+    if (percent < 1) {
+    localStorage.setItem(STORAGE_KEY, seconds);    
+    } else {
+        console.log('чистити кеш');
+        localStorage.removeItem(STORAGE_KEY);
+    }
+    
+    
+};
+
+player.on('timeupdate', throttle(onPlay, 1000));
+
+const currentTime = localStorage.getItem(STORAGE_KEY);
+    // Відтворення даних стартуючи з currentTime.
+
+player.setCurrentTime(currentTime).then(function(seconds) {
     // seconds = the actual time that the player seeked to
 }).catch(function(error) {
     switch (error.name) {
@@ -28,26 +47,3 @@ player.setCurrentTime(30.456).then(function(seconds) {
 });
 
 
-
-
-//     player.on('eventName', function(data) {
-//     // data is an object containing properties specific to that event
-//     duration: 61.857
-//     percent: 0.049
-//     seconds: 3.034
-// });
-
-
-// document.addEventListener("webkitfullscreenchange", function( event ) {
-// 	console.log(88, event);
-//     // The event object doesn't carry information about the fullscreen state of the browser,
-//     // but it is possible to retrieve it through the fullscreen API
-//     if ( document.fullscreen ) {
-        
-//         // The target of the event is always the document,
-//         // but it is possible to retrieve the fullscreen element through the API
-//         var el = document.fullscreenElement;
-// 		console.log(el, 777);
-//     }
-
-// });
